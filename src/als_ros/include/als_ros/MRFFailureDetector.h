@@ -280,7 +280,7 @@ public:
     }
 
     void printFailureProbability(void) {
-        std::cout << "Failure probability = " << failureProbability_ * 100.0 << " [%]" << std::endl;
+        ROS_DEBUG_STREAM("Failure probability = " << failureProbability_ * 100.0 << " [%]" << std::endl);
     }
 
 private:
