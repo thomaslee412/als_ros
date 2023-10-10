@@ -23,6 +23,7 @@
 #include <string>
 #include <vector>
 #include <ros/ros.h>
+#include <math.h>
 #include <opencv2/opencv.hpp>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/PoseArray.h>
@@ -148,13 +149,13 @@ public:
             int invalidScanNum = 0;
             for (int i = 0; i < (int)scan_.ranges.size(); ++i) {
                 double r = scan_.ranges[i];
-                if (r < scan_.range_min || scan_.range_max < r)
+                if (r < scan_.range_min || scan_.range_max < r || isinf(r) || isnan(r))
                     invalidScanNum++;
             }
             double invalidScanRate = (double)invalidScanNum / (int)scan_.ranges.size();
-            if (invalidScanRate > 0.95) {
+            if (invalidScanRate > 0.5) {
                 scanMightInvalid_ = true;
-                ROS_ERROR("MCL scan might invalid.");
+                // ROS_ERROR("MCL scan might invalid.");
             } else {
                 scanMightInvalid_ = false;
             }
