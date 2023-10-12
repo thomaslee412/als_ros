@@ -1017,7 +1017,7 @@ public:
         std::vector<T> residualErrors(size);
         for (int i = 0; i < size; ++i) {
             double r = scan_.ranges[i];
-            if (r < 1.0 || 30.0 < r || isinf(r) || isnan(r))
+            if (r < 1.0 || 30.0 < r || isinf(r) || isnan(r)) {
                 residualErrors[i] = -1.0;
                 continue;
             }
