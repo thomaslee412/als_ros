@@ -149,10 +149,15 @@ public:
             int invalidScanNum = 0;
             for (int i = 0; i < (int)scan_.ranges.size(); ++i) {
                 double r = scan_.ranges[i];
-                if (r < scan_.range_min || scan_.range_max < r || isinf(r) || isnan(r))
+                if (r < scan_.range_min || 30.0 < r || isinf(r) || isnan(r))
                     invalidScanNum++;
+                else
+                    ROS_DEBUG_STREAM("scanRange: " << r);
             }
             double invalidScanRate = (double)invalidScanNum / (int)scan_.ranges.size();
+            ROS_DEBUG_STREAM("invalidScanNum: " << (double)invalidScanNum);
+            ROS_DEBUG_STREAM("scanSize: " << (int)scan_.ranges.size());
+            ROS_DEBUG_STREAM("invalidScanRate: " << invalidScanRate);
             if (invalidScanRate > 0.5) {
                 scanMightInvalid_ = true;
                 ROS_DEBUG("MCL scan might invalid.");
@@ -1034,16 +1039,16 @@ public:
     }
 
     void printResult(void) {
-        ROS_DEBUG_STREAM("MCL: x = " << mclPose_.getX() << " [m], y = " << mclPose_.getY() << " [m], yaw = " << mclPose_.getYaw() * rad2deg_ << " [deg]" << std::endl);
-        ROS_DEBUG_STREAM("Odom: x = " << odomPose_.getX() << " [m], y = " << odomPose_.getY() << " [m], yaw = " << odomPose_.getYaw() * rad2deg_ << " [deg]" << std::endl);
-        ROS_DEBUG_STREAM("total likelihood = " << totalLikelihood_ << std::endl);
-        ROS_DEBUG_STREAM("average likelihood = " << averageLikelihood_ << std::endl);
-        ROS_DEBUG_STREAM("max likelihood = " << maxLikelihood_ << std::endl);
-        ROS_DEBUG_STREAM("effective sample size = " << effectiveSampleSize_ << std::endl);
+        ROS_DEBUG_STREAM("MCL: x = " << mclPose_.getX() << " [m], y = " << mclPose_.getY() << " [m], yaw = " << mclPose_.getYaw() * rad2deg_ << " [deg]");
+        ROS_DEBUG_STREAM("Odom: x = " << odomPose_.getX() << " [m], y = " << odomPose_.getY() << " [m], yaw = " << odomPose_.getYaw() * rad2deg_ << " [deg]");
+        ROS_DEBUG_STREAM("total likelihood = " << totalLikelihood_);
+        ROS_DEBUG_STREAM("average likelihood = " << averageLikelihood_);
+        ROS_DEBUG_STREAM("max likelihood = " << maxLikelihood_);
+        ROS_DEBUG_STREAM("effective sample size = " << effectiveSampleSize_);
         if (useAugmentedMCL_)
-            ROS_DEBUG_STREAM("amcl random particles rate = " << amclRandomParticlesRate_ << std::endl);
+            ROS_DEBUG_STREAM("amcl random particles rate = " << amclRandomParticlesRate_);
         if (estimateReliability_ && classifierType_ == 0)
-            ROS_DEBUG_STREAM("reliability = " << reliability_ << " (mae = " << maeClassifier_.getMAE(getResidualErrors<double>(particles_[maxLikelihoodParticleIdx_].getPose())) << " [m], th = " << maeClassifier_.getFailureThreshold() << " [m])" << std::endl);
+            ROS_DEBUG_STREAM("reliability = " << reliability_ << " (mae = " << maeClassifier_.getMAE(getResidualErrors<double>(particles_[maxLikelihoodParticleIdx_].getPose())) << " [m], th = " << maeClassifier_.getFailureThreshold() << " [m])");
     }
 
     void publishROSMessages(void) {
