@@ -149,10 +149,8 @@ public:
             int invalidScanNum = 0;
             for (int i = 0; i < (int)scan_.ranges.size(); ++i) {
                 double r = scan_.ranges[i];
-                if (r < scan_.range_min || 30.0 < r || isinf(r) || isnan(r))
+                if (r < 1.0 || 30.0 < r || isinf(r) || isnan(r))
                     invalidScanNum++;
-                else
-                    ROS_DEBUG_STREAM("scanRange: " << r);
             }
             double invalidScanRate = (double)invalidScanNum / (int)scan_.ranges.size();
             ROS_DEBUG_STREAM("invalidScanNum: " << (double)invalidScanNum);
@@ -1019,7 +1017,7 @@ public:
         std::vector<T> residualErrors(size);
         for (int i = 0; i < size; ++i) {
             double r = scan_.ranges[i];
-            if (r <= scan_.range_min || scan_.range_max <= r) {
+            if (r < 1.0 || 30.0 < r || isinf(r) || isnan(r))
                 residualErrors[i] = -1.0;
                 continue;
             }
@@ -1247,7 +1245,7 @@ public:
         fp = fopen("/tmp/als_ros_scan_points.txt", "w");
         for (int i = 0; i < (int)scan_.ranges.size(); ++i) {
             double r = scan_.ranges[i];
-            if (r < scan_.range_min || scan_.range_max < r)
+            if (r < 1.0 || 30.0 < r || isinf(r) || isnan(r))
                 continue;
             double t = (double)i * scan_.angle_increment + scan_.angle_min + sensorYaw;
             double x = r * cos(t) + sensorX;
@@ -1260,7 +1258,7 @@ public:
             fp = fopen("/tmp/als_ros_unknown_scan_points.txt", "w");
             for (int i = 0; i < (int)unknownScan_.ranges.size(); ++i) {
                 double r = unknownScan_.ranges[i];
-                if (r < unknownScan_.range_min || unknownScan_.range_max < r)
+                if (r < 1.0 || 30.0 < r || isinf(r) || isnan(r))
                     continue;
                 double t = (double)i * unknownScan_.angle_increment + unknownScan_.angle_min + sensorYaw;
                 double x = r * cos(t) + sensorX;
@@ -1446,7 +1444,7 @@ private:
                 continue;
             }
             double r = unknownScan_.ranges[i];
-            if (r <= unknownScan_.range_min || unknownScan_.range_max <= r) {
+            if (r < 1.0 || 30.0 < r || isinf(r) || isnan(r)) {
                 unknownScan_.ranges[i] = 0.0;
                 continue;
             }
@@ -1531,7 +1529,7 @@ private:
         int u, v;
         double expectedRange = -1.0;
         double hitThreshold = 0.5 * mapResolution_;
-        for (double r = 0.0; r < scan_.range_max; r += mapResolution_) {
+        for (double r = 1.0; r < 30.0; r += mapResolution_) {
             xy2uv(x, y, &u, &v);
             if (onMap(u, v)) {
                 double dist = (double)distMap_.at<float>(v, u);
@@ -1591,7 +1589,7 @@ private:
         double sensorYaw = baseLink2Laser_.getYaw() + yaw;
         for (int i = 0; i < (int)unknownScan_.ranges.size(); ++i) {
             double r = unknownScan_.ranges[i];
-            if (r <= unknownScan_.range_min || unknownScan_.range_max <= r) {
+            if (r < 1.0 || 30.0 < r || isinf(r) || isnan(r)) {
                 unknownScan_.ranges[i] = 0.0;
                 continue;
             }
