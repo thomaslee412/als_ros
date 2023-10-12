@@ -416,8 +416,6 @@ private:
             }
             double misalignmentRatio = (double)misalignedNum / (double)validMeasurementNum;
             double unknownRatio = (double)(measurementNum - validMeasurementNum) / (double)measurementNum;
-            ROS_DEBUG_STREAM("misalignmentRatio: " << misalignmentRatio);
-            ROS_DEBUG_STREAM("unknownRatio: " << unknownRatio);
             if (misalignmentRatio >= misalignmentRatioThreshold_
                 || unknownRatio >= unknownRatioThreshold_)
                 failureCnt++;

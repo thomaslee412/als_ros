@@ -156,7 +156,7 @@ public:
             ROS_DEBUG_STREAM("invalidScanNum: " << (double)invalidScanNum);
             ROS_DEBUG_STREAM("scanSize: " << (int)scan_.ranges.size());
             ROS_DEBUG_STREAM("invalidScanRate: " << invalidScanRate);
-            if (invalidScanRate > 0.5) {
+            if (invalidScanRate > 0.25) {
                 scanMightInvalid_ = true;
                 ROS_DEBUG("MCL scan might invalid.");
             } else {
@@ -545,13 +545,13 @@ public:
     }
 
     void calculateLikelihoodsByMeasurementModel(void) {
+        mclPoseStamp_ = scan_.header.stamp;
         if (scanMightInvalid_)
             return;
 
         if (rejectUnknownScan_ && (measurementModelType_ == 0 || measurementModelType_ == 1))
             rejectUnknownScan();
-
-        mclPoseStamp_ = scan_.header.stamp;
+            
         double xo = baseLink2Laser_.getX();
         double yo = baseLink2Laser_.getY();
         double yawo = baseLink2Laser_.getYaw();
