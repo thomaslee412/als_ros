@@ -149,7 +149,7 @@ public:
             int invalidScanNum = 0;
             for (int i = 0; i < (int)scan_.ranges.size(); ++i) {
                 double r = scan_.ranges[i];
-                if (r < 1.0 || 30.0 < r || isinf(r) || isnan(r))
+                if (r < 0.5)
                     invalidScanNum++;
             }
             double invalidScanRate = (double)invalidScanNum / (int)scan_.ranges.size();
