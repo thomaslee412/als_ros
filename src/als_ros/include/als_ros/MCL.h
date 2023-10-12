@@ -156,7 +156,7 @@ public:
             ROS_DEBUG_STREAM("invalidScanNum: " << (double)invalidScanNum);
             ROS_DEBUG_STREAM("scanSize: " << (int)scan_.ranges.size());
             ROS_DEBUG_STREAM("invalidScanRate: " << invalidScanRate);
-            if (invalidScanRate > 0.35) {
+            if (invalidScanRate > 0.02) {
                 scanMightInvalid_ = true;
                 ROS_DEBUG("MCL scan might invalid.");
             } else {
