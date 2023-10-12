@@ -156,7 +156,7 @@ public:
             ROS_DEBUG_STREAM("invalidScanNum: " << (double)invalidScanNum);
             ROS_DEBUG_STREAM("scanSize: " << (int)scan_.ranges.size());
             ROS_DEBUG_STREAM("invalidScanRate: " << invalidScanRate);
-            if (invalidScanRate > 0.25) {
+            if (invalidScanRate > 0.35) {
                 scanMightInvalid_ = true;
                 ROS_DEBUG("MCL scan might invalid.");
             } else {
@@ -551,7 +551,7 @@ public:
 
         if (rejectUnknownScan_ && (measurementModelType_ == 0 || measurementModelType_ == 1))
             rejectUnknownScan();
-            
+
         double xo = baseLink2Laser_.getX();
         double yo = baseLink2Laser_.getY();
         double yawo = baseLink2Laser_.getYaw();
