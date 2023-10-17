@@ -158,7 +158,7 @@ public:
             ROS_DEBUG_STREAM("invalidScanRate: " << invalidScanRate);
             if (invalidScanRate > 0.02) {
                 scanMightInvalid_ = true;
-                ROS_DEBUG("MCL scan might invalid.");
+                ROS_WARN_STREAM("MCL scan might invalid. InvalidScanRate: " << invalidScanRate);
             } else {
                 scanMightInvalid_ = false;
             }
